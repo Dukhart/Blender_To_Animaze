@@ -4,7 +4,7 @@ bl_info = {
     "version": (1, 0),
     "blender": (2, 80, 0),
     "location": "View3D > Object > Apply > Rigify to Animaze, TopBar > File > Export > Animaze",
-    "description": "Converts Rigify armature to be compatible with Animaze.",
+    "description": "Converts Rigify armature to be compatible with Animaze./nplugin independently developed by techArtist Dukhart",
     "warning": "Alpha release!",
     "doc_url": "www.Dukhart.ca/BlenderAnimazePlugin",
     "category": "Export",
