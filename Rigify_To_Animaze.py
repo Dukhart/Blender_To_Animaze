@@ -159,12 +159,13 @@ class RIGIFY_TO_ANIMAZE_OT_export_fbx(bpy.types.Operator):
     bl_idname = "rigify_to_animaze.export_fbx"
     bl_label = "Animaze"
     
-    blendName = bpy.path.basename(bpy.context.blend_data.filepath)
+    blendName = 'none'
     #print(blendName)
     avatarName = 'none'
     
     def execute(self, context):
         self.avatarName = self.trimString(self.blendName,6)
+        blendName = bpy.path.basename(bpy.context.blend_data.filepath)
         print(self.avatarName)
         path = bpy.path.abspath('//')
         subFolder = 'Animaze'
