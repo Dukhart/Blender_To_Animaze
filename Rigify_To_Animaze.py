@@ -3,7 +3,7 @@ bl_info = {
     "author": "Dukhart",
     "version": (1, 0),
     "blender": (2, 80, 0),
-    "location": "View3D > Apply > Rigify > ToAnimaze",
+    "location": "View3D > Object > Apply > Rigify to Animaze, TopBar > File > Export > Animaze",
     "description": "Converts Rigify Rig to be compatible with Animaze",
     "warning": "Still inDevelopment!!! plugin independently developed by the techArtist Dukhart",
     "doc_url": "www.Dukhart.ca/BlenderAnimazePlugin","www.GitHub.com/Dukhart/BlenderAnimazePlugin"
@@ -15,14 +15,14 @@ import os
 import math
        
 class RIGIFY_TO_ANIMAZE_OT_convert_rig(bpy.types.Operator):
-    """Tooltip"""
+    """Converts Rigify rig to Animaze"""
     bl_idname = "rigify_to_animaze.convert_rig"
-    bl_label = "Rig to Animaze"
+    bl_label = "Rigify to Animaze"
 
     def execute(self, context):
         obj = context.active_object
         exit_code = {'FINISHED'}
-        if (self.isArmature(obj) == False):
+        if not obj.type == 'ARMATURE':
             self.report({'ERROR'},'No armature selected')
             exit_code = {'CANCELLED'}
             return exit_code
@@ -34,14 +34,6 @@ class RIGIFY_TO_ANIMAZE_OT_convert_rig(bpy.types.Operator):
         self.report({'INFO'},'Conversion finished: ' + str(exit_code))
         
         return exit_code
-    
-    # returns true if object is a armature
-    @classmethod
-    def isArmature(context, obj):
-        if obj and obj.type == 'ARMATURE':
-            return True
-        else:
-            return False
         
     @classmethod
     def renameActionDataPath(context, path, oldName, newName):
@@ -65,7 +57,7 @@ class RIGIFY_TO_ANIMAZE_OT_convert_rig(bpy.types.Operator):
     def updateActions (context, obj, self, oldName, newName):
         self.report({'INFO'}, 'OLD= ' + oldName)
         self.report({'INFO'}, 'NEW= ' + newName)
-        if (self.isArmature(obj) == False):
+        if not obj.type == 'ARMATURE':
             self.report({'ERROR'}, 'No armature selected')
             return {'CANCELLED'}
         
@@ -163,9 +155,9 @@ class RIGIFY_TO_ANIMAZE_OT_convert_rig(bpy.types.Operator):
         return {'FINISHED'}
     
 class RIGIFY_TO_ANIMAZE_OT_export_fbx(bpy.types.Operator):
-    """Export FBX for animaze"""
+    """Exports fbx files needed for Animaze"""
     bl_idname = "rigify_to_animaze.export_fbx"
-    bl_label = "ExportFBXAnimaze"
+    bl_label = "Animaze"
     
     blendName = bpy.path.basename(bpy.context.blend_data.filepath)
     #print(blendName)
@@ -246,18 +238,32 @@ class RIGIFY_TO_ANIMAZE_OT_export_fbx(bpy.types.Operator):
             bake_anim_simplify_factor=0.1, path_mode='AUTO', embed_textures=False, batch_mode='OFF', 
             use_batch_own_dir=True, use_metadata=True, axis_forward='-Z', axis_up='Y'
             )
-               
+
+def draw_item_fbx(self, context):
+    layout = self.layout
+    layout.operator("rigify_to_animaze.export_fbx")
+    
+def draw_item_rig(self, context):
+    layout = self.layout
+    layout.operator("rigify_to_animaze.convert_rig")
+
 def register():
     bpy.utils.register_class(RIGIFY_TO_ANIMAZE_OT_convert_rig)
     bpy.utils.register_class(RIGIFY_TO_ANIMAZE_OT_export_fbx)
-
+    
+    bpy.types.TOPBAR_MT_file_export.append(draw_item_fbx)
+    bpy.types.VIEW3D_MT_object_apply.append(draw_item_rig)
+    
 def unregister():
     bpy.utils.unregister_class(RIGIFY_TO_ANIMAZE_OT_convert_rig)
     bpy.utils.unregister_class(RIGIFY_TO_ANIMAZE_OT_export_fbx)
+    
+    bpy.types.TOPBAR_MT_file_export.remove(draw_item_fbx)
+    bpy.types.VIEW3D_MT_object_apply.remove(draw_item_rig)
 
 if __name__ == "__main__":
     register()
 
     # test call
-    bpy.ops.rigify_to_animaze.convert_rig()
-    bpy.ops.rigify_to_animaze.export_fbx()
+    #bpy.ops.rigify_to_animaze.convert_rig()
+    #bpy.ops.rigify_to_animaze.export_fbx()
