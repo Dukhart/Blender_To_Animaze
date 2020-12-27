@@ -1,3 +1,7 @@
+'''
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
+'''
 bl_info = {
     "name": "Rigify To Animaze",
     "author": "Dukhart",
