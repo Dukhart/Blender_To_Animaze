@@ -5,7 +5,7 @@ Version 3, 29 June 2007
 bl_info = {
     "name": "Rigify To Animaze",
     "author": "Dukhart",
-    "version": (1, 0),
+    "version": (1, 1),
     "blender": (2, 80, 0),
     "location": "View3D > Object > Apply > Rigify to Animaze, TopBar > File > Export > Animaze",
     "description": "Converts Rigify armature to be compatible with Animaze./nplugin independently developed by techArtist Dukhart",
@@ -265,7 +265,6 @@ def unregister():
 
 if __name__ == "__main__":
     register()
-
     # test call
     #bpy.ops.rigify_to_animaze.convert_rig()
     #bpy.ops.rigify_to_animaze.export_fbx()
